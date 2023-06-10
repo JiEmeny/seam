@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.seam.mapper.CoursecheckMapper">
+    <resultMap id="Coursecheck" type="com.example.seam.pojo.Coursecheck">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="curriculummanagementid" jdbcType="INTEGER" property="curriculummanagementid"/>
+        <result column="userid" jdbcType="INTEGER" property="userid"/>
+        <result column="signed" jdbcType="INTEGER" property="signed"/>
+    </resultMap>
+    <!--
+    添加签到
+    -->
+    <insert id="add_coursecheck" parameterType="com.example.seam.pojo.Coursecheck">
+        insert into coursecheck
+        values (null, #{curriculummanagementid}, #{userid}, #{signed})
+    </insert>
+    <!--
+    修改签到状态
+    -->
+    <update id="nodify_coursecheck" parameterType="com.example.seam.pojo.Coursecheck">
+        update coursecheck
+        set
+        <if test="signed!=null">signed=#{signed},</if>
+        <if test="curriculummanagementid!=null">curriculummanagementid=#{curriculummanagementid}</if>
+        where id = #{id}
+    </update>
+    <!--
+    查看签到
+    -->
+    <select id="look_register" resultMap="Coursecheck">
+        select * from coursecheck
+        <if test="id!=null">where id=#{id}</if>
+    </select>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.seam.mapper.GradeMapper">
+    <resultMap id="Grade" type="com.example.seam.pojo.Grade">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="grades" jdbcType="VARCHAR" property="grades"/>
+    </resultMap>
+    <!--
+    添加班级
+    -->
+    <insert id="set_grade" parameterType="com.example.seam.pojo.Grade">
+        insert into grade
+        values (null, #{grades});
+    </insert>
+    <!--
+    删除班级
+    -->
+    <delete id="del_grade" parameterType="com.example.seam.pojo.Grade">
+        delete
+        from grade
+        where id = #{id}
+    </delete>
+    <!--
+    修改班级
+    -->
+    <update id="modify_grade" parameterType="com.example.seam.pojo.Grade">
+        update grade
+        set grades=#{grades}
+        where id = #{id}
+    </update>
+    <!--
+    查询班级
+    -->
+    <select id="get_grade" resultMap="Grade">
+        select *
+        from grade
+        <if test="grades!=null">where grades=#{grades}</if>
+    </select>
+</mapper>

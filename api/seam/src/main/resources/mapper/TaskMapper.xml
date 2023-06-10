@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.seam.mapper.TaskMapper">
+    <resultMap id="Task" type="com.example.seam.pojo.Task">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="userid" jdbcType="INTEGER" property="userid"/>
+        <result column="answer" jdbcType="VARCHAR" property="answer"/>
+        <result column="time" jdbcType="VARCHAR" property="time"/>
+        <result column="timeon" jdbcType="VARCHAR" property="timeon"/>
+        <result column="endtime" jdbcType="VARCHAR" property="endtime"/>
+        <result column="curriculummanagementid" jdbcType="INTEGER" property="curriculummanagementid"/>
+    </resultMap>
+    <!--
+    添加作业
+    -->
+    <insert id="add_task" parameterType="com.example.seam.pojo.Task">
+        insert into task
+        values (null, #{title}, #{content}, #{userid}, #{answer}, #{time}, #{timeon}, #{endtime},
+                #{curriculummanagementid})
+    </insert>
+    <!--
+    删除作业
+    -->
+    <update id="del_task" parameterType="com.example.seam.pojo.Task">
+        delete
+        from task
+        where id = #{id}
+    </update>
+    <!--
+    修改作业
+    -->
+    <update id="job_change" parameterType="com.example.seam.pojo.Task">
+        update task set
+        <if test="title!=null">
+            title=#{title}
+        </if>
+        <if test="content!=null">
+            content=#{content}
+        </if>
+        <if test="answer!=null">
+            answer=#{answer}
+        </if>
+        <if test="time!=null">
+            time=#{time}
+        </if>
+        <if test="timeon!=null">
+            timeon=#{timeon}
+        </if>
+        <if test="endtime!=null">
+            endtime=#{endtime}
+        </if>
+        where id=#{id}
+    </update>
+    <!--
+    查看作业
+    -->
+    <select id="get_task" resultMap="Task">
+        select * from task
+        <if test="id!=null">where id=#{id}</if>
+    </select>
+</mapper>

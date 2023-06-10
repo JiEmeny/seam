@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    调整图标和文字间的距离,添加dimen覆盖默认的design_bottom_navigation_margin来实现。-->
+    <dimen name="design_bottom_navigation_margin">10dp</dimen>
+    <!--    BottomNavigationView的默认高度是56dp，覆盖一下design_bottom_navigation_height修改-->
+    <dimen name="design_bottom_navigation_height">10dp</dimen>
+</resources>

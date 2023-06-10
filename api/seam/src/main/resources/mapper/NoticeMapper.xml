@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.seam.mapper.NoticeMapper">
+    <resultMap id="Notice" type="com.example.seam.pojo.Notice">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="time" jdbcType="VARCHAR" property="time"/>
+        <result column="userid" jdbcType="INTEGER" property="userid"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+    </resultMap>
+    <!--
+    添加通知
+    -->
+    <insert id="add_notice" parameterType="com.example.seam.pojo.Notice">
+        insert into notice
+        values (null, #{state}, #{title}, #{content}, #{time}, #{userid}, #{type})
+    </insert>
+    <!--
+    修改查看状态
+    -->
+    <update id="modify_see_type" parameterType="com.example.seam.pojo.Notice">
+        update notice
+        set state = #{state}
+        where id = #{id}
+    </update>
+    <!--
+    修改通知状态
+    -->
+    <update id="modify_notice_type" parameterType="com.example.seam.pojo.Notice">
+        update notice
+        set type = #{type}
+        where id = #{id}
+    </update>
+    <!--
+    删除通知
+    -->
+    <delete id="del_notice" parameterType="com.example.seam.pojo.Notice">
+        delete
+        from notice
+        where id = #{id}
+    </delete>
+    <!--
+    查看通知
+    -->
+    <select id="my" resultMap="Notice">
+        select * from notice
+        <if test="id!=null">where id=#{id}</if>
+    </select>
+</mapper>

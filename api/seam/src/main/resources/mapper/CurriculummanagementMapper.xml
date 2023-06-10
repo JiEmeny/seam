@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.seam.mapper.CurriculummanagementMapper">
+    <resultMap id="Curriculummanagement" type="com.example.seam.pojo.Curriculummanagement">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="course" jdbcType="INTEGER" property="course"/>
+        <result column="weeks" jdbcType="VARCHAR" property="weeks"/>
+        <result column="ms" jdbcType="INTEGER" property="ms"/>
+        <result column="userid" jdbcType="INTEGER" property="userid"/>
+        <result column="classroomid" jdbcType="INTEGER" property="classroomid"/>
+        <result column="gradeid" jdbcType="INTEGER" property="gradeid"/>
+    </resultMap>
+    <!--
+    查询课程
+    -->
+    <select id="sel_course" resultMap="Curriculummanagement">
+        select * from curriculummanagement
+        <if test="id!=null">where id=#{id}</if>
+    </select>
+    <!--
+    添加课程
+    -->
+    <insert id="add_course" parameterType="com.example.seam.pojo.Curriculummanagement">
+        insert into curriculummanagement
+        values (null, #{course}, #{weeks}, #{ms}, #{userid}, #{classroomid}, #{gradeid})
+    </insert>
+    <!--
+    根据id修改课程
+    -->
+    <update id="nodify_course" parameterType="com.example.seam.pojo.Curriculummanagement">
+        update curriculummanagement set
+        <if test="course!=null">course=#{course},</if>
+        <if test="weeks!=null">weeks=#{weeks},</if>
+        <if test="ms!=null">ms=#{ms},</if>
+        <if test="userid!=null">userid=#{userid},</if>
+        <if test="classroomid!=null">classroomid=#{classroomid},</if>
+        <if test="gradeid!=null">gradeid=#{gradeid}</if>
+        where id = #{id}
+    </update>
+    <!--
+    根据id删除课程
+    -->
+    <delete id="del_course" parameterType="com.example.seam.pojo.Curriculummanagement">
+        delete
+        from curriculummanagement
+        where id = #{id}
+    </delete>
+</mapper>

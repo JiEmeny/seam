@@ -1,0 +1,118 @@
+/**
+  * user
+  */
+CREATE TABLE user(
+id INTEGER PRIMARY KEY auto_increment,
+username VARCHAR(20),
+password VARCHAR(20),
+type INTEGER,
+FOREIGN KEY (type) REFERENCES mold(id)
+)
+/**
+  * mold
+  */
+CREATE TABLE mold(
+id INTEGER PRIMARY KEY auto_increment,
+type VARCHAR(20)
+)
+/**
+  * users
+  */
+CREATE TABLE users(
+id INTEGER PRIMARY KEY auto_increment,
+avatar VARCHAR(255),
+name VARCHAR(50),
+sex VARCHAR(2),
+phone VARCHAR(20),
+address VARCHAR(255),
+idcard VARCHAR(20),
+FOREIGN KEY (id) REFERENCES user(id)
+)
+/**
+  * grade
+  */
+CREATE TABLE grade(
+id INTEGER PRIMARY KEY auto_increment,
+grades VARCHAR(20)
+)
+/**
+  * classrooms
+  */
+CREATE TABLE classrooms(
+id INTEGER PRIMARY KEY auto_increment,
+classrooms VARCHAR(20)
+)
+/**
+  * course
+  */
+CREATE TABLE course(
+id INTEGER PRIMARY KEY auto_increment,
+courses VARCHAR(30)
+)
+/**
+  * time
+  */
+CREATE TABLE time(
+id INTEGER PRIMARY KEY auto_increment,
+times VARCHAR(20)
+)
+/**
+  * curriculummanagement
+  */
+CREATE TABLE curriculummanagement(
+id INTEGER PRIMARY KEY auto_increment,
+course INTEGER,
+weeks VARCHAR(10),
+ms INTEGER,
+userid INTEGER,
+classroomid INTEGER,
+gradeid INTEGER,
+FOREIGN key(ms)REFERENCES time(id),
+FOREIGN key(course)REFERENCES course(id),
+FOREIGN key(userid)REFERENCES user(id),
+FOREIGN key(classroomid)REFERENCES classrooms(id),
+FOREIGN key(gradeid)REFERENCES grade(id)
+)
+/**
+  * coursecheck
+  */
+CREATE TABLE coursecheck(
+id INTEGER PRIMARY KEY auto_increment,
+curriculummanagementid INTEGER,
+userid INTEGER,
+signed INTEGER,
+FOREIGN key(curriculummanagementid)REFERENCES curriculummanagement(id),
+FOREIGN key(userid)REFERENCES user(id),
+FOREIGN key(signed)REFERENCES mold(id)
+)
+/**
+  * notice
+  */
+CREATE TABLE notice(
+id INTEGER PRIMARY key auto_increment,
+state INTEGER,
+title VARCHAR(30),
+content VARCHAR(255),
+time VARCHAR(30),
+userid INTEGER,
+type INTEGER,
+FOREIGN key(state)REFERENCES mold(id),
+FOREIGN key(userid)REFERENCES user(id),
+FOREIGN key(type)REFERENCES mold(id)
+)
+/**
+  * task
+  */
+CREATE TABLE task(
+id INTEGER PRIMARY KEY auto_increment,
+title VARCHAR(30),
+content VARCHAR(255),
+userid INTEGER,
+answer VARCHAR(255),
+time VARCHAR(30),
+timeon VARCHAR(30),
+endtime VARCHAR(30),
+curriculummanagementid INTEGER,
+FOREIGN key(userid)REFERENCES user(id),
+FOREIGN key(curriculummanagementid)REFERENCES curriculummanagement(id)
+)

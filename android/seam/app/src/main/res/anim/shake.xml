@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="1000"
+    android:fromXDelta="0dp"
+    android:interpolator="@anim/cycle_3"
+    android:toXDelta="10dp">
+    <!--1秒抖动3次-->
+    <!--
+    android:fromXDelta：抖动起始位置
+    android:toXDelta：抖动结束位置
+    android:duration：抖动时间（毫秒）
+    android:interpolator：在抖动时间内抖动次数
+    -->
+</translate>

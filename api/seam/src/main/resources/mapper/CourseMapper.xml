@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.seam.mapper.CourseMapper">
+    <resultMap id="Course" type="com.example.seam.pojo.Course">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="courses" jdbcType="VARCHAR" property="courses"/>
+    </resultMap>
+    <!--
+    查询全部课程
+    -->
+    <select id="get_course" resultMap="Course">
+        select * from course
+        <if test="id!=null">where id=#{id}</if>
+    </select>
+    <!--
+    添加课程
+    -->
+    <insert id="set_course" parameterType="com.example.seam.pojo.Course">
+        insert into course
+        values (null, #{courses})
+    </insert>
+    <!--
+    删除课程
+    -->
+    <delete id="delete_course" parameterType="com.example.seam.pojo.Course">
+        delete
+        from course
+        where id = #{id}
+    </delete>
+    <!--
+    修改课程
+    -->
+    <update id="modify_course" parameterType="com.example.seam.pojo.Course">
+        update course
+        set courses=#{courses}
+        where id = #{id}
+    </update>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.seam.mapper.ClassroomsMapper">
+    <resultMap id="Classrooms" type="com.example.seam.pojo.Classrooms">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="classrooms" jdbcType="VARCHAR" property="classrooms"/>
+    </resultMap>
+    <!--
+    添加教室
+    -->
+    <insert id="add_classrooms" parameterType="com.example.seam.pojo.Classrooms">
+        insert into classrooms
+        values (null, #{classrooms})
+    </insert>
+    <!--
+    删除教室
+    -->
+    <delete id="del_classrooms" parameterType="com.example.seam.pojo.Classrooms">
+        delete
+        from classrooms where id=#{id}
+    </delete>
+    <!--
+    修改教室
+    -->
+    <update id="modify_classrooms" parameterType="com.example.seam.pojo.Classrooms">
+        update classrooms
+        set classrooms=#{classrooms}
+        where id = #{id}
+    </update>
+    <!--
+    查询教室
+    -->
+    <select id="inquiry_classrooms" resultMap="Classrooms">
+        select * from classrooms
+        <if test="id!=null">where id=#{id}</if>
+    </select>
+</mapper>
