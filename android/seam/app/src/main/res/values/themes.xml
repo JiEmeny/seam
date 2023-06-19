@@ -3,7 +3,11 @@
     <style name="Base.Theme.Seam" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">#f0f0f0</item>
+        <item name="colorPrimaryDark">#f0f0f0</item>
         <item name="android:windowBackground">#f0f0f0</item>
+        <!-- 让内容显示在状态栏下面 -->
+        <item name="android:clipToPadding">true</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="Theme.Seam" parent="Base.Theme.Seam" />

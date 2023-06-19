@@ -35,7 +35,7 @@ public class UserController {
     public Object Login(@RequestBody User user) {
         List<User> login = userService.login(user.getUsername(), user.getPassword());
         Map<String, Object> map = new HashMap<>();
-        if (login != null || !login.isEmpty()) {
+        if (login.size()!=0) {
             // 包装token
             String token = TokenUtil.get_token(user);
             List<User> userList = userService.get_username(user.getUsername());
@@ -123,5 +123,17 @@ public class UserController {
             return JSON.toJSON(new BackJson("添加失败", "500"));
         }
         return JSON.toJSON(new BackJson("该用户名已存在", "500"));
+    }
+
+    /**
+     * 根据username获取user
+     *
+     * @param username
+     * @return user
+     */
+    @GetMapping({"/get_user_username/{username}","/get_user_username/","/get_user_username"})
+    public Object GetUserByUsername(@PathVariable(value = "username", required = false) String username) {
+        List<User> user = userService.get_username(username);
+        return JSON.toJSON(new BackJson("200", user, "查询成功"));
     }
 }

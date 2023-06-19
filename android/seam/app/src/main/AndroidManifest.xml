@@ -5,28 +5,55 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!--震动权限-->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!--系统文件读写权限-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" /><!--add 2022-2-11 Android11-->
     <application
-        android:name=".util.retrofit.App"
+        android:name="com.example.assist.base.BaseApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Seam"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        tools:targetApi="33">
         <activity
-            android:name=".view.ui.Login"
+            android:name=".view.ui.STBY"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.ui.Root" />
-        <activity android:name=".view.ui.Student" />
-        <activity android:name=".view.ui.Teacher" />
+        <activity android:name=".view.ui.root.Root" />
+        <activity android:name=".view.ui.Login"/>
+        <activity android:name=".view.ui.student.Student" />
+        <activity android:name=".view.ui.teacher.Teacher" />
+        <activity android:name=".view.ui.root.Settings" />
+        <activity android:name=".view.ui.root.About" />
+        <activity android:name=".view.ui.root.DetailedInformation" />
+        <activity android:name=".view.ui.root.ChangePassword" />
+        <activity android:name=".view.ui.root.FeedBack" />
+        <activity android:name=".view.ui.root.Modify" />
+        <activity android:name=".view.ui.root.NoticeDatails" />
+        <activity android:name=".view.ui.root.AddNotice" />
+        <activity android:name=".view.ui.root.Listing" />
+        <activity android:name=".view.ui.student.T_Listing"/>
+        <activity android:name=".view.ui.student.S_DetailedInformation"/>
+        <activity android:name=".view.ui.student.S_FeedBack"/>
+        <activity android:name=".view.ui.student.S_Modify"/>
+        <activity android:name=".view.ui.student.S_NoticeDatails"/>
+        <activity android:name=".view.ui.student.S_Settings"/>
+        <activity android:name=".view.ui.student.S_ChangePassword"/>
     </application>
 </manifest>

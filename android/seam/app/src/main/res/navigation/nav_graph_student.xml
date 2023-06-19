@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/home"
+    tools:ignore="UnusedNavigation">
+    <fragment
+        android:id="@+id/home"
+        android:name="com.example.seam.view.fragment.student.S_Home"
+        android:label="home"
+        tools:layout="@layout/s_home" />
+    <fragment
+        android:id="@+id/notice"
+        android:name="com.example.seam.view.fragment.student.S_Notice"
+        android:label="notice"
+        tools:layout="@layout/t_notice" />
+    <fragment
+        android:id="@+id/check"
+        android:name="com.example.seam.view.fragment.student.S_Check"
+        android:label="check"
+        tools:layout="@layout/t_check" />
+    <fragment
+        android:id="@+id/personal"
+        android:name="com.example.seam.view.fragment.student.S_Personal"
+        android:label="personal"
+        tools:layout="@layout/t_personal" />
+</navigation>

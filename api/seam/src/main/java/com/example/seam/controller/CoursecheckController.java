@@ -37,7 +37,7 @@ public class CoursecheckController {
      */
     @PutMapping("/nodify_coursecheck")
     public Object NodifyCoursecheck(@RequestBody Coursecheck coursecheck) {
-        int i = coursecheckMapper.nodify_coursecheck(coursecheck.getCurriculummanagementid(), coursecheck.getSigned(), coursecheck.getId());
+        int i = coursecheckMapper.nodify_coursecheck( coursecheck.getSigned(), coursecheck.getId());
         if (i != 0) {
             return JSON.toJSON(new BackJson("修改成功", "200"));
         }

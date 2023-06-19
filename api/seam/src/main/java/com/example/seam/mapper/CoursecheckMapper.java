@@ -12,7 +12,7 @@ import java.util.List;
 public interface CoursecheckMapper extends BaseMapper<Coursecheck> {
     int add_coursecheck(int curriculummanagementid, int userid, int signed);
 
-    int nodify_coursecheck(int curriculummanagementid,int signed, int id);
+    int nodify_coursecheck(int signed, int id);
 
     List<Coursecheck> look_register(String id);
 }

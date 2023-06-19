@@ -116,3 +116,19 @@ curriculummanagementid INTEGER,
 FOREIGN key(userid)REFERENCES user(id),
 FOREIGN key(curriculummanagementid)REFERENCES curriculummanagement(id)
 )
+/**
+  * feedback
+  */
+create table feedback(
+id INTEGER PRIMARY KEY AUTO_INCREMENT,
+title VARCHAR(255),
+content VARCHAR(255)
+)
+/**
+  * serve
+  */
+CREATE TABLE serve(
+id INTEGER PRIMARY KEY AUTO_INCREMENT,
+ingurl VARCHAR(255),
+name VARCHAR(30)
+)

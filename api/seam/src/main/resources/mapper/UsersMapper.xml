@@ -32,15 +32,35 @@
     根据id修改用户信息
     avatar、name、sex、phone、address、idcard
     -->
-    <update id="modify" parameterType="com.example.seam.pojo.Users">
-        update users set
-        <if test="avatar!=null">avatar=#{avatar},</if>
-        <if test="name!=null">name=#{name},</if>
-        <if test="sex!=null">sex=#{sex},</if>
-        <if test="phone!=null">phone=#{phone},</if>
-        <if test="address!=null">address=#{address},</if>
-        <if test="idcard!=null">idcard=#{idcard}</if>
-        where id=#{id}
+    <update id="modify_avatar" parameterType="com.example.seam.pojo.Users">
+        update users
+        set avatar=#{avatar}
+        where id = #{id}
+    </update>
+    <update id="modify_name" parameterType="com.example.seam.pojo.Users">
+        update users
+        set name=#{name}
+        where id = #{id}
+    </update>
+    <update id="modify_sex" parameterType="com.example.seam.pojo.Users">
+        update users
+        set sex=#{sex}
+        where id = #{id}
+    </update>
+    <update id="modify_phone" parameterType="com.example.seam.pojo.Users">
+        update users
+        set phone=#{phone}
+        where id = #{id}
+    </update>
+    <update id="modify_address" parameterType="com.example.seam.pojo.Users">
+        update users
+        set address=#{address}
+        where id = #{id}
+    </update>
+    <update id="modify_idcard" parameterType="com.example.seam.pojo.Users">
+        update users
+        set idcard=#{idcard}
+        where id = #{id}
     </update>
     <!--
     删除用户信息

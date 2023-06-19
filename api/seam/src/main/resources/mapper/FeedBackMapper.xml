@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.seam.mapper.FeedBackMapper">
+    <resultMap id="FeedBack" type="com.example.seam.pojo.FeedBack">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+    </resultMap>
+    <!--
+    查询全部
+    -->
+    <select id="get_feedback" resultMap="FeedBack">
+        select *
+        from feedback;
+    </select>
+    <!--
+    添加
+    -->
+    <insert id="add_feedback" parameterType="com.example.seam.pojo.FeedBack">
+        insert into feedback values (null,#{title},#{context})
+    </insert>
+</mapper>

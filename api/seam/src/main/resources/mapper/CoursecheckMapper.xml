@@ -20,9 +20,7 @@
     -->
     <update id="nodify_coursecheck" parameterType="com.example.seam.pojo.Coursecheck">
         update coursecheck
-        set
-        <if test="signed!=null">signed=#{signed},</if>
-        <if test="curriculummanagementid!=null">curriculummanagementid=#{curriculummanagementid}</if>
+        set signed=#{signed}
         where id = #{id}
     </update>
     <!--

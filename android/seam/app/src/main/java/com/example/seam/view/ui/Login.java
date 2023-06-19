@@ -4,47 +4,60 @@ import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.os.Vibrator;
-import android.view.View;
+import android.provider.Settings;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.example.assist.base.BaseApp;
+import com.example.assist.base.NetworkActivity;
 import com.example.seam.R;
 import com.example.seam.databinding.LoginBinding;
-import com.example.seam.util.retrofit.App;
 import com.example.seam.util.retrofit.RetrofitServiceUtil;
 import com.example.seam.util.retrofit.RetrofitUtil;
+import com.example.seam.view.ui.root.Root;
+import com.example.seam.view.ui.student.Student;
+import com.example.seam.view.ui.teacher.Teacher;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Login extends AppCompatActivity {
-
-    // 初始化App.sp.edit()
-    SharedPreferences.Editor edit = App.sp.edit();
-    public static String AUTHORITY = "Authorization";
-    private LoginBinding binding;
-    private RetrofitServiceUtil serviceUtil = RetrofitUtil.retrofitServiceUtil();
+/**
+ * 登录界面
+ *
+ * @e-mail:2036573698@qq.com
+ */
+public class Login extends NetworkActivity<LoginBinding> {
+    SharedPreferences.Editor edit;
+    private RetrofitServiceUtil serviceUtil;
     private Vibrator vibrator;
+    private boolean isRefuse;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = LoginBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+    protected void onCreate() {
+        edit = BaseApp.sp.edit();
+        serviceUtil = RetrofitUtil.retrofitServiceUtil();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
 
-        String username = App.sp.getString("username", "");
-        String password = App.sp.getString("password", "");
+
+        // 获取sp中存储的username和password
+        String username = BaseApp.sp.getString("username", "");
+        String password = BaseApp.sp.getString("password", "");
         // 自动登录验证
         if (!username.isEmpty() && !password.isEmpty()) {
+            // 对输入框进行fuzhi
+            binding.username.setText(username);
+            binding.password.setText(password);
             // 如果sp中保存username、password将进行自动登录
             GetLogin(username, password);
         } else {
@@ -52,8 +65,100 @@ public class Login extends AppCompatActivity {
             edit.clear();
             edit.commit();
         }
+
+
+
+    }
+
+    @Override
+    protected void onObserveData() {
+        // 权限申请
+        Power();
+
+        // 点击登录
+        Login();
+        //其他
+        Other();
         // 想设置震动大小可以通过改变pattern来设定，如果开启时间太短，震动效果可能感觉不到
         vibrator = (Vibrator) getApplication().getSystemService(Service.VIBRATOR_SERVICE);
+    }
+
+    /**
+     * 权限申请
+     */
+    private void Power() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !isRefuse) {
+            // 先判断有没有权限
+            if (!Environment.isExternalStorageManager()) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.setData(Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, 1024);
+            }
+        }
+    }
+
+    /**
+     * 带回授权结果
+     *
+     * @param requestCode The integer request code originally supplied to
+     *                    startActivityForResult(), allowing you to identify who this
+     *                    result came from.
+     * @param resultCode  The integer result code returned by the child activity
+     *                    through its setResult().
+     * @param data        An Intent, which can return result data to the caller
+     *                    (various data can be attached to Intent "extras").
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1024 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // 检查是否有权限
+            if (Environment.isExternalStorageManager()) {
+                isRefuse = false;
+                // 授权成功
+            } else {
+                isRefuse = true;
+                // 授权失败
+            }
+        }
+    }
+
+    /**
+     * 进行登录网络访问判断用户名和密码
+     */
+    private void GetLogin(String username, String password) {
+        // 初始化Login.RowsBean.UserBean
+        com.example.seam.pojo.Login.RowsBean.UserBean userBean = new com.example.seam.pojo.Login.RowsBean.UserBean();
+        // 进行存放数据
+        userBean.setUsername(username);
+        userBean.setPassword(password);
+        serviceUtil
+                .Login(userBean)
+                .enqueue(new Callback<com.example.seam.pojo.Login>() {
+                    @Override
+                    public void onResponse(Call<com.example.seam.pojo.Login> call, Response<com.example.seam.pojo.Login> response) {
+                        // 保存token
+                        edit.putString("token", response.body().getRows().getToken());
+                        edit.putString("username", username);
+                        edit.putString("password", password);
+                        edit.apply();
+                        // 根据权限就行跳转页面
+                        Jump(response.body().getRows().getUser().get(0).getType());
+                    }
+
+                    @Override
+                    public void onFailure(Call<com.example.seam.pojo.Login> call, Throwable t) {
+                    }
+                });
+    }
+
+    /**
+     * 法律责任
+     * 注册
+     * 找回密码
+     * 点击复选按钮后面的文字实现复选框的选择与取消
+     */
+    private void Other() {
         // 法律责任
         binding.text2.setOnClickListener(v -> {
             // 进行弹窗显示《服务协议和隐私保护措施》
@@ -166,8 +271,6 @@ public class Login extends AppCompatActivity {
                 binding.checkBox.setChecked(true);
             }
         });
-        // 点击登录
-        Login();
     }
 
     /**
@@ -178,19 +281,18 @@ public class Login extends AppCompatActivity {
             // 判断是否同意《服务协议和隐私保护措施》
             if (binding.checkBox.isChecked()) {
                 // 同意《服务协议和隐私保护措施》，进行登录
-                if (binding.username.getText().toString().trim().isEmpty() ||
-                        binding.password.getText().toString().trim().isEmpty()) {
+                if (binding.username.getText().toString().isEmpty() ||
+                        binding.password.getText().toString().isEmpty()) {
                     // 进行提示
                     Toast.makeText(this, "用户名和密码不能为空", Toast.LENGTH_SHORT).show();
                 } else {
                     // 登录
-                    GetLogin(binding.username.getText().toString().trim()
-                            , binding.password.getText().toString().trim());
+                    GetLogin(binding.username.getText().toString(), binding.password.getText().toString());
                 }
             } else {
                 // 四个参数（停止、开启、停止、开启）（-1不重复，非-1为从pattern的指定下标开始重复）
                 // 停止一秒，震动一秒，停止一秒，震动一秒，不重复
-                vibrator.vibrate(new long[]{100, 100, 10, 100}, -1);
+                vibrator.vibrate(new long[]{0, 100, 0, 0}, -1);
                 // 不同意《服务协议和隐私保护措施》，抖动checkBox、text1、text2控件
                 Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
                 binding.checkBox.startAnimation(animation);
@@ -201,44 +303,27 @@ public class Login extends AppCompatActivity {
     }
 
     /**
-     * 进行登录网络访问
+     * 根据账号权限就行跳转页面
+     *
+     * @param type
      */
-    private void GetLogin(String username, String password) {
-        // 初始化Login.RowsBean.UserBean
-        com.example.seam.pojo.Login.RowsBean.UserBean userBean = new com.example.seam.pojo.Login.RowsBean.UserBean();
-        // 进行存放数据
-        userBean.setUsername(username);
-        userBean.setPassword(password);
-        serviceUtil
-                .Login(userBean)
-                .enqueue(new Callback<com.example.seam.pojo.Login>() {
-                    @Override
-                    public void onResponse(Call<com.example.seam.pojo.Login> call, Response<com.example.seam.pojo.Login> response) {
-                        // 保存token
-                        edit.putString("token", response.body().getRows().getToken());
-                        edit.putString("username", binding.username.getText().toString().trim());
-                        edit.putString("password", binding.password.getText().toString().trim());
-                        edit.apply();
-                        // 根据权限就行跳转页面
-                        switch (response.body().getRows().getUser().get(0).getType()) {
-                            case 0:
-                                // 管理人员
-                                startActivity(new Intent(Login.this, Root.class));
-                                break;
-                            case 1:
-                                // 老师
-                                startActivity(new Intent(Login.this, Teacher.class));
-                                break;
-                            case 2:
-                                // 学生
-                                startActivity(new Intent(Login.this, Student.class));
-                                break;
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<com.example.seam.pojo.Login> call, Throwable t) {
-                    }
-                });
+    private void Jump(int type) {
+        switch (type) {
+            case 0:
+                // 管理人员
+                startActivity(new Intent(Login.this, Root.class));
+                finish();
+                break;
+            case 1:
+                // 老师
+                startActivity(new Intent(Login.this, Teacher.class));
+                finish();
+                break;
+            case 2:
+                // 学生
+                startActivity(new Intent(Login.this, Student.class));
+                finish();
+                break;
+        }
     }
 }

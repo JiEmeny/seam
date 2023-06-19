@@ -40,6 +40,7 @@ public class FileController {
         }
         int i = fileMapper.set_file("/JiMoney/Pic/" + f.getFiles());
         if (i != 0) {
+            fileName = "/JiMoney/Pic/" + fileName;
             return JSON.toJSON(new BackJson("上传成功", fileName, "200"));
         }
         return JSON.toJSON(new BackJson("上传失败", "500"));

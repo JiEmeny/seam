@@ -2,8 +2,10 @@ package com.example.seam.pojo;
 
 import java.util.List;
 
+/**
+ * @e-mail:2036573698@qq.com
+ */
 public class User {
-
     private int count;
     private String msg;
     private String code;

@@ -6,6 +6,7 @@ import com.example.seam.pojo.User;
 import com.example.seam.pojo.Users;
 import com.example.seam.service.UserService;
 import com.example.seam.util.BackJson;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class UsersController {
         List<Users> users = usersMapper.get_users(id);
         for (Users user : users) {
             if (!user.getAvatar().isEmpty()) {
-                user.setAvatar("/JiMoney/Pic/" + user.getAvatar());
+                user.setAvatar(user.getAvatar());
             }
         }
         return JSON.toJSON(new BackJson("查询成功", users, users.size(), "200"));
@@ -44,8 +45,26 @@ public class UsersController {
      */
     @PutMapping("/modify")
     public Object Modify(@RequestBody Users users) {
-        int modify = usersMapper.modify(users.getId(), users.getAvatar(), users.getName(), users.getSex(), users.getPhone(), users.getAddress(), users.getIdcard());
-        if (modify != 0) {
+        int i1 = 10, i2 = 10, i3 = 10, i4 = 10, i5 = 10, i6 = 10;
+        if (users.getAvatar() != null) {
+            i1 = usersMapper.modify_avatar(users.getId(), users.getAvatar());
+        }
+        if (users.getName() != null) {
+            i2 = usersMapper.modify_name(users.getId(), users.getName());
+        }
+        if (users.getSex() != null) {
+            i3 = usersMapper.modify_sex(users.getId(), users.getSex());
+        }
+        if (users.getPhone() != null) {
+            i4 = usersMapper.modify_phone(users.getId(), users.getPhone());
+        }
+        if (users.getAddress() != null) {
+            i5 = usersMapper.modify_address(users.getId(), users.getAddress());
+        }
+        if (users.getIdcard() != null) {
+            i6 = usersMapper.modify_idcard(users.getId(), users.getIdcard());
+        }
+        if (i1 != 0 || i2 != 0 || i3 != 0 || i4 != 0 || i5 != 0 || i6 != 0) {
             return JSON.toJSON(new BackJson("修改成功", users, "200"));
         }
         return JSON.toJSON(new BackJson("修改失败", "500"));

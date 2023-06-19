@@ -3,6 +3,10 @@
      */
     @PostMapping("/JiMoney/index/login")
     {"username":"","password":""}
+     /**
+     * 根据username获取user
+     */
+    @GetMapping("/get_user_username{username}")
     /**
      * 获取全部用户
      */
@@ -154,7 +158,7 @@
      * 根据id修改签到状态
      */
     @PutMapping("/JiMony/coursecheck/nodify_coursecheck")
-    {"signed":"","id":"","curriculummanagementid":""}
+    {"signed":"","id":""}
     /**
      * 查询签到
      */
@@ -187,3 +191,16 @@
      * 通用查找文件
      */
     @GetMapping("/JiMony/file/getfile/{id}")
+    package com.example.seam.controller;
+    /**
+     * 查询全部意见反馈
+     */
+    @GetMapping("/JiMony/feedback/get_feedback")
+    /**
+     * 新增意见看反馈
+     */
+    @PostMapping("/JiMony/feedback/add_feedback")
+    /**
+     * 获取全部服务
+     */
+    @GetMapping("/JiEmony/serve/get_serve")
